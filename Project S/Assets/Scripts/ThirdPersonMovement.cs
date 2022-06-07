@@ -10,6 +10,7 @@ using UnityEngine;
 public class ThirdPersonMovement : MonoBehaviour
 {
     public CharacterController controller;
+    public Animator anim;
 
     public float speed = 6;
     public float gravity = -9.81f;
@@ -27,6 +28,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        anim.SetBool("isWalking", false);
     }
     // Update is called once per frame
     void Update()
@@ -37,11 +39,24 @@ public class ThirdPersonMovement : MonoBehaviour
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            anim.SetTrigger("isPressed");
         }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+            anim.SetTrigger("isJumping");
+            anim.SetBool("isInAir", true);
+
+        }
+        if (isGrounded==true)
+        {
+            anim.SetBool("isInAir", false);
         }
         //gravity
         velocity.y += gravity * Time.deltaTime;
@@ -50,6 +65,16 @@ public class ThirdPersonMovement : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        if (horizontal !=0 && vertical != 0 || horizontal != 0 && vertical == 0 || horizontal == 0 && vertical != 0 )
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+            anim.SetBool("isWalking", false);
+
+
+
+
 
         if (direction.magnitude >= 0.1f)
         {

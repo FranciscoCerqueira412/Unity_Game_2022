@@ -169,9 +169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 2284580760713692854}
-  speed: 3
+  anim: {fileID: 2284580760713692855}
+  speed: 2
   gravity: -9.81
-  jumpHeight: 1
+  jumpHeight: 0.5
   groundCheck: {fileID: 2047781939}
   groundDistance: 0.1
   groundMask:
@@ -399,7 +400,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1432821988602660
 GameObject:
@@ -993,11 +994,11 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513111293550681103}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: b5249513c62aee342a7152465edacf3d, type: 3}
   m_Controller: {fileID: 9100000, guid: 40f2d13e4d44b304f9c212ad186959a8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
