@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class CameraRaycast : MonoBehaviour
 {
-    private IInteractable currentTarget;
+    private Interactable currentTarget;
     private Camera mainCamera;
+    public RaycastHit hit;
 
     private void Start()
     {
@@ -23,17 +24,15 @@ public class CameraRaycast : MonoBehaviour
         }
     }
 
-    private void RaycastInteractable()
+    public void RaycastInteractable()
     {
-        RaycastHit hit;
-
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         //Debug.DrawRay(ray.origin, ray.direction * 15.0f, Color.red, 2f);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
 
             if (interactable != null)
             {

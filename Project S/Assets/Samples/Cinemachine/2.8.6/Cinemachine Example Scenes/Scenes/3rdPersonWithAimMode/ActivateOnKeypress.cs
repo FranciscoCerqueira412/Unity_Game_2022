@@ -7,6 +7,7 @@ public class ActivateOnKeypress : MonoBehaviour
     public GameObject Reticle;
 
     Cinemachine.CinemachineVirtualCameraBase vcam;
+    public Transform playerMesh;
     bool boosted = false;
 
     void Start()
