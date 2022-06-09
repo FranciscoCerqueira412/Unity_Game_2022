@@ -29,7 +29,7 @@ public class CameraRaycast : MonoBehaviour
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        Debug.DrawRay(ray.origin, ray.direction * 15.0f, Color.red, 2f);
+        //Debug.DrawRay(ray.origin, ray.direction * 15.0f, Color.red, 2f);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {

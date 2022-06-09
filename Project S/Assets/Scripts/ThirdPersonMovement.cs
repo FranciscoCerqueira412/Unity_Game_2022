@@ -12,11 +12,13 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Animator anim;
 
-    public float speed = 6;
+    public float speed ;
+    public float runningSpeed; 
     public float gravity = -9.81f;
     public float jumpHeight = 3;
     Vector3 velocity;
     bool isGrounded;
+    bool _rotateOnMove=true;
 
     public Camera cameraObj;
     public Transform cameraObjTransform;
@@ -49,10 +51,9 @@ public class ThirdPersonMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            anim.SetTrigger("isPressed");
-        }
+
+        Dance();
+
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -82,23 +83,48 @@ public class ThirdPersonMovement : MonoBehaviour
 
 
 
-
         if (direction.magnitude >= 0.1f)
         {
+            
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraObjTransform.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            if (_rotateOnMove)
+            {
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            }
+            
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                speed = runningSpeed;
+                anim.SetBool("isRunning", true);
+            }
+            if (!Input.GetKey(KeyCode.LeftShift))
+            {
+                anim.SetBool("isRunning", false);
+                speed = 3;
+            }
+
+                
+
         }
 
-
+    }
+    public void SetRotateOnMove(bool newRotateOnMove)
+    {
+        _rotateOnMove = newRotateOnMove;
     }
 
-    public void OnMouseDrag()
+    public void Dance()
     {
+        float randomNumber = Random.Range(1, 3);
         
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            anim.SetTrigger("Dance" + randomNumber);
+        }
     }
 
 }
