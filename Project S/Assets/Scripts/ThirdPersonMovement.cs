@@ -111,6 +111,16 @@ public class ThirdPersonMovement : MonoBehaviour
 
         }
 
+        //debug
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else if (Input.GetKeyUp(KeyCode.I))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
     }
     public void SetRotateOnMove(bool newRotateOnMove)
     {
