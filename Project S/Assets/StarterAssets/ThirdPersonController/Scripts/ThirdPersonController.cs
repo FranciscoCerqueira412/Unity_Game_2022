@@ -169,6 +169,7 @@ namespace StarterAssets
             Move();
             Dance();
             Aim();
+            UnlockMouse();
 
         }
 
@@ -425,6 +426,15 @@ namespace StarterAssets
 
         }
 
+        public void UnlockMouse()
+        {
+            if (Input.GetKey(KeyCode.I) && !_input.aim)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+                Cursor.lockState = CursorLockMode.Locked;
+        }
 
         private void SetSensitivity(float newSensitivity)
         {

@@ -8,6 +8,7 @@ public class Interactable : MonoBehaviour
     protected RectTransform canvasRect;
     protected TextMeshProUGUI textMeshPro;
     protected Inventory inventory;
+    protected GameObject player;
 
     //public fields
     public float MaxRange = 10f;
@@ -20,11 +21,14 @@ public class Interactable : MonoBehaviour
         interactionRect = GameObject.FindGameObjectWithTag("PickableUI").GetComponent<RectTransform>();
         textMeshPro = interactionRect.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         canvasRect = interactionRect.transform.parent.GetComponent<RectTransform>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log("Interactable Awake!");
     }
 
     public virtual void Start()
     {
         interactionRect.gameObject.SetActive(false);
+        Debug.Log("Interactable Start!");
     }
 
     public virtual void OnStartHover()
@@ -47,7 +51,7 @@ public class Interactable : MonoBehaviour
     {
         
         textMeshPro.text = IntText;
-        interactionRect.gameObject.SetActive(true);
+        interactionRect.gameObject.SetActiveRecursively(true);
         //then you calculate the position of the UI element
         //0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
 

@@ -21,8 +21,32 @@ public class Inventory : MonoBehaviour
 
             item.OnPickup();
 
+            //fetch items collider
+            Collider itemCollider = (item as MonoBehaviour).gameObject.GetComponent<Collider>();
+            //disable item collider on PickUp (re-enable on drop later)
+            itemCollider.enabled = false;
+
             //? - checks if event is null
             ItemAdded?.Invoke(this, new InventoryEventArgs(item));
+        }
+    }
+
+    public void RemoveItem(IItem item)
+    {
+        if (items.Contains(item))
+        {
+            items.Remove(item);
+
+            item.OnDrop();
+
+            Collider itemCollider = (item as MonoBehaviour ).gameObject.GetComponent<Collider>();
+            
+            if (itemCollider != null && !itemCollider.enabled)
+            {
+                itemCollider.enabled = true;
+            }
+
+            ItemRemoved?.Invoke(this, new InventoryEventArgs(item));
         }
     }
 

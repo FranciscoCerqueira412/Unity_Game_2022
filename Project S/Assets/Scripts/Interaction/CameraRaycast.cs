@@ -33,7 +33,7 @@ public class CameraRaycast : MonoBehaviour
         {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
 
-            if (interactable != null)
+            if (interactable != null && hit.collider.gameObject.layer == 8)
             {
                 if (hit.distance <= interactable.MaxRange)
                 {

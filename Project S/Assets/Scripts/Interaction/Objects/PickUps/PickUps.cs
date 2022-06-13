@@ -26,7 +26,6 @@ public class PickUps : Interactable
 
         ChangeInteractableColor(ogColor);
     }
-    //
 
     //color animation method
     public void ChangeInteractableColor(Color color) 
