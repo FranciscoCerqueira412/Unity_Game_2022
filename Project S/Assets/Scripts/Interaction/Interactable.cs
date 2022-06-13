@@ -25,6 +25,8 @@ public class Interactable : MonoBehaviour
     public virtual void Start()
     {
         interactionRect.gameObject.SetActive(false);
+        //interactionRect.transform.GetChild(0).gameObject.SetActive(false);
+        //interactionRect.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public virtual void OnStartHover()
@@ -47,10 +49,9 @@ public class Interactable : MonoBehaviour
     {
         
         textMeshPro.text = IntText;
-        interactionRect.gameObject.SetActive(true);
+        interactionRect.gameObject.SetActiveRecursively(true);
         //then you calculate the position of the UI element
         //0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
-
         Vector2 conversion = Camera.main.WorldToViewportPoint(transform.position);
         interactionRect.anchoredPosition = new Vector2(conversion.x + 135f, conversion.y + 60f);
     }

@@ -10,8 +10,8 @@ public class Inventory : MonoBehaviour
 
     //events to update UI
     public event EventHandler<InventoryEventArgs> ItemAdded;
-    public event EventHandler<InventoryEventArgs> ItemRemoved;
-    public event EventHandler<InventoryEventArgs> ItemHeld;
+    //public event EventHandler<InventoryEventArgs> ItemRemoved;
+    //public event EventHandler<InventoryEventArgs> ItemHeld;
 
     public void AddItem(IItem item)
     {
