@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Handgun : PickUps, IItem
+public class MachineGun : PickUps, IItem
 {
     //fields
-    public string Name => "Handgun";
+    public string Name => "MachineGun";
 
     public Sprite _Image;
 
@@ -11,7 +11,7 @@ public class Handgun : PickUps, IItem
     //
 
     //pickup fields
-    public GameObject holster;
+    public GameObject backHolster;
     public Vector3 pickPosition;
     public Vector3 pickRotation;
 
@@ -41,9 +41,9 @@ public class Handgun : PickUps, IItem
 
     public void OnPickup()
     {
-        if (holster.transform.childCount == 0)
+        if (backHolster.transform.childCount == 0)
         {
-            transform.parent = holster.transform;
+            transform.parent = backHolster.transform;
             transform.localPosition = pickPosition;
             transform.localEulerAngles = pickRotation;
         }
@@ -56,9 +56,9 @@ public class Handgun : PickUps, IItem
         highlightColor = new Color32(254, 216, 177, 225);
         ogColor = objMeshRenderer.material.color;
         defaultRotation = transform.rotation;
-        defaultScale = transform.lossyScale/10;
+        defaultScale = transform.lossyScale / 10;
 
-        IntText = "PickUp!";
-        Debug.Log("Handgun Start!");
+        IntText = "Pick Up!";
+        Debug.Log("MachineGun start!");
     }
 }

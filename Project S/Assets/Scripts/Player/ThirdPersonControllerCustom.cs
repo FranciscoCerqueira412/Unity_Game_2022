@@ -97,7 +97,7 @@ namespace StarterAssets
         public float CameraAngleOverride = 0.0f;
 
         [Tooltip("For locking the camera position on all axis")]
-        public bool LockCameraPosition = false;
+        public bool LockCameraPosition = true;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -177,6 +177,7 @@ namespace StarterAssets
 
         private void Update()
         {
+            LockCameraPosition = false;
             _hasAnimator = TryGetComponent(out _animator);
             JumpAndGravity();
             GroundedCheck();
@@ -189,10 +190,8 @@ namespace StarterAssets
                 Walk(1);
             }
 
-
             Dance();
             Aim();
-            UnlockMouse();
             Crouch();
 
 
@@ -204,6 +203,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
+            UnlockMouse();
             CameraRotation();
         }
 
@@ -555,12 +555,14 @@ namespace StarterAssets
 
         public void UnlockMouse()
         {
-            if (Input.GetKey(KeyCode.I) && !_input.aim)
+            if (Input.GetKey(KeyCode.Tab) && !_input.aim)
             {
                 Cursor.lockState = CursorLockMode.None;
+                LockCameraPosition = true;
             }
             else
                 Cursor.lockState = CursorLockMode.Locked;
+                
         }
 
         private void SetSensitivity(float newSensitivity)

@@ -21,9 +21,17 @@ public class Weapons : MonoBehaviour
     bool isPistol;
     bool isMachineGun;
 
+    public GameObject holster;
+    public GameObject backHolster;
+
+
+    ItemDragHandler itemHand;
     //[Header("Caracteristicas das armas")]
 
-    
+    private void Start()
+    {
+        itemHand = FindObjectOfType<ItemDragHandler>();
+    }
 
 
 
@@ -71,7 +79,7 @@ public class Weapons : MonoBehaviour
 
     void RigChanging()
     {
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKey(KeyCode.Alpha1) && holster.transform.childCount>0)
         {
             //Pistol
             isMachineGun = false;
@@ -85,14 +93,21 @@ public class Weapons : MonoBehaviour
             rigBuilder.layers[6].active = false;
             _weapons[0].SetActive(true);
             _weapons[1].SetActive(false);
+            holster.transform.GetChild(0).gameObject.SetActive(false);
+            if (backHolster.transform.childCount > 0)
+            {
+                backHolster.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            
+
 
             if (Input.GetKeyDown(KeyCode.J))
             {
-                _weapons[0].GetComponent<MeshFilter>().mesh = pistolMeshes[Random.Range(0, 13)];
+                //_weapons[0].GetComponent<MeshFilter>().mesh = pistolMeshes[Random.Range(0, 13)];
             }
 
         }
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKey(KeyCode.Alpha2) && backHolster.transform.childCount > 0)
         {
             //MachineGun
             isPistol = false;
@@ -106,11 +121,18 @@ public class Weapons : MonoBehaviour
             rigBuilder.layers[6].active = true;
             _weapons[1].SetActive(true);
             _weapons[0].SetActive(false);
-
-            if (Input.GetKeyDown(KeyCode.K))
+            if (holster.transform.childCount > 0)
             {
-                _weapons[1].GetComponentInChildren<MeshFilter>().mesh = machineGunMeshes[Random.Range(0, 17)];
+                holster.transform.GetChild(0).gameObject.SetActive(true);
             }
+            
+            backHolster.transform.GetChild(0).gameObject.SetActive(false);
+            _weapons[1].GetComponentInChildren<MeshFilter>().mesh = backHolster.transform.GetChild(0).GetComponent<MeshFilter>().mesh;
+
+            //if (Input.GetKeyDown(KeyCode.K))
+            //{
+            //    _weapons[1].GetComponentInChildren<MeshFilter>().mesh = machineGunMeshes[Random.Range(0, 17)];
+            //}
             //ChangePoseMachineGun();
 
         }
@@ -124,6 +146,8 @@ public class Weapons : MonoBehaviour
             rigBuilder.layers[4].active = false;
             rigBuilder.layers[5].active = false;
             rigBuilder.layers[6].active = false;
+            holster.transform.GetChild(0).gameObject.SetActive(true);
+            backHolster.transform.GetChild(0).gameObject.SetActive(true);
 
             foreach (GameObject weapons in _weapons)
                 weapons.SetActive(false);

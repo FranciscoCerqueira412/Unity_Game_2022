@@ -39,24 +39,13 @@ public class Dash : MonoBehaviour
         }
 
         _anim.SetBool("Dash", false);
-        if (Input.GetKeyDown(KeyCode.Q) && dashCooldownTimer==0)
+        if (_input.dash && dashCooldownTimer==0)
         {
             _anim.SetBool("Dash", true);
             StartCoroutine(Dashh());
             dashCooldownTimer = dashCooldown;
         }
     }
-
-    //IEnumerator Dashi()
-    //{
-    //    float starTime = Time.time;
-
-    //    while (Time.time< starTime + dashTime)
-    //    {
-    //        thirdReference.Walk(dashSpeed);
-    //        yield return null;
-    //    }
-    //}
 
     IEnumerator Dashh()
     {
