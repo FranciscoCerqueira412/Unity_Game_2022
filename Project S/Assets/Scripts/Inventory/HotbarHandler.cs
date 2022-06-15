@@ -35,10 +35,17 @@ public class HotbarHandler : PickUps
 
     private void HotbarRemove(object sender, InventoryEventArgs eventData)
     {
+        Debug.Log(transform.childCount);
         foreach (Transform slot in transform)
         {
+          
             Transform imgTransform = slot.GetChild(0).GetChild(0);
+            IItem item = imgTransform.GetComponent<IItem>();
             Image image = imgTransform.GetComponent<Image>();
+            if (!image.enabled)
+            {
+                continue;
+            }
             ItemDragHandler dragHandler = imgTransform.GetComponent<ItemDragHandler>();
 
             //if item found in the UI
