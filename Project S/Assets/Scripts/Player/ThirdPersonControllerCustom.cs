@@ -103,9 +103,18 @@ namespace StarterAssets
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
         [SerializeField] private CinemachineVirtualCamera playerAimCamera;
+        [SerializeField] private CinemachineVirtualCamera playerFollowCamera;
+        public float zoomMinDistance = 2.46f;
+        public float zoomMaxDistance =7f;
+
+        public float zoomSpeed=0.02f;
+        public float zoomFactor = 0.5f;
+        private float zoom = 5.4f;
+        private float cameraDistance = 5.4f;
+        private float zoomVelocity = 0f;
 
         // player
-        private float _speed;
+        [HideInInspector]public float _speed;
         private float _animationBlend;
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
@@ -134,7 +143,12 @@ namespace StarterAssets
         private Animator _animator;
         private CharacterController _controller;
         private StarterAssetsInputsCustom _input;
+        JetPack _jetpackCurGas;
         private GameObject _mainCamera;
+
+
+        public GameObject jetpack;
+        public bool isJetpackActive = false;
 
         private const float _threshold = 0.01f;
 
@@ -172,9 +186,10 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+            _jetpackCurGas = FindObjectOfType<JetPack>();
+            this.zoomVelocity = 0f;
 
         }
-
         private void Update()
         {
             LockCameraPosition = false;
@@ -193,11 +208,8 @@ namespace StarterAssets
             Dance();
             Aim();
             Crouch();
-
-
-
-
-
+            EnableJetpack();
+            CameraZoom();
         }
 
 
@@ -255,6 +267,18 @@ namespace StarterAssets
                 // Cinemachine will follow this target
                 CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                     _cinemachineTargetYaw, 0.0f);
+
+        }
+
+        private void CameraZoom()
+        {
+            if (!_input.aim)
+            {
+                this.zoom -= _input.zoom / 240f * this.zoomFactor;
+                this.zoom = Mathf.Clamp(this.zoom, this.zoomMinDistance, this.zoomMaxDistance);
+                this.cameraDistance = Mathf.SmoothDamp(this.cameraDistance, this.zoom, ref this.zoomVelocity, Time.unscaledTime * this.zoomSpeed);
+                this.playerFollowCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().CameraDistance = this.cameraDistance;
+            }
 
         }
 
@@ -503,7 +527,7 @@ namespace StarterAssets
             }
         }
 
-        private void Aim()
+        public void Aim()
         {
 
             Vector3 mouseWorldPosition = Vector3.zero;
@@ -538,6 +562,9 @@ namespace StarterAssets
                 Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
                 transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
+
+
+
                 if (Reticle != null)
                     Reticle.SetActive(true);
             }
@@ -550,6 +577,15 @@ namespace StarterAssets
                 Reticle.SetActive(false);
             }
 
+
+        }
+
+        private void EnableJetpack()
+        {
+            if (Input.GetKeyUp(KeyCode.J))
+            {
+                jetpack.SetActive(!jetpack.activeInHierarchy); ;
+            }
 
         }
 

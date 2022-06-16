@@ -8,7 +8,8 @@ public class Handgun : PickUps, IItem
     public Sprite _Image;
 
     public Sprite Image => _Image;
-    //
+
+    Weapons pistol;
 
     //pickup fields
     public GameObject holster;
@@ -18,6 +19,7 @@ public class Handgun : PickUps, IItem
     private Vector3 defaultScale { get; set; }
     private Quaternion defaultRotation;
 
+    
     //on interact callback
     public override void OnInteract()
     {
@@ -29,6 +31,12 @@ public class Handgun : PickUps, IItem
     //item callbacks
     public void OnDrop()
     {
+        if (transform.gameObject.activeSelf==false)
+        {
+            gameObject.SetActive(true);
+            pistol.rigBuilder.layers[3].active = false;
+            pistol._weapons[0].gameObject.SetActive(false);
+        }
         Debug.Log("OnDrop");
         transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 0, 0.5f), defaultRotation);
         transform.localScale = defaultScale;
@@ -36,7 +44,7 @@ public class Handgun : PickUps, IItem
 
     public void OnHold()
     {
-        Debug.Log("OnHold");
+
     }
 
     public void OnPickup()
@@ -52,6 +60,7 @@ public class Handgun : PickUps, IItem
     //
     public override void Start()
     {
+        pistol = FindObjectOfType<Weapons>();
         objMeshRenderer = GetComponent<MeshRenderer>();
         highlightColor = new Color32(254, 216, 177, 225);
         ogColor = objMeshRenderer.material.color;

@@ -14,9 +14,12 @@ public class Dash : MonoBehaviour
     private bool isDashing;
     public float dashSpeed;
     public float dashTime;
+    public GameObject trail;
 
     public float dashCooldown;
     public float dashCooldownTimer;
+
+    public ParticleSystem DashFX;
 
     Animator _anim;
 
@@ -29,22 +32,28 @@ public class Dash : MonoBehaviour
 
     private void Update()
     {
-        if (dashCooldownTimer>0)
-        {
-            dashCooldownTimer -= Time.deltaTime;
-        }
-        if (dashCooldownTimer<0)
-        {
-            dashCooldownTimer = 0;
-        }
 
-        _anim.SetBool("Dash", false);
-        if (_input.dash && dashCooldownTimer==0)
+            if (dashCooldownTimer > 0)
+            {
+                dashCooldownTimer -= Time.deltaTime;
+            }
+            if (dashCooldownTimer < 0)
+            {
+                dashCooldownTimer = 0;
+            }
+
+        if ((thirdReference._speed > 0.1f))
         {
-            _anim.SetBool("Dash", true);
-            StartCoroutine(Dashh());
-            dashCooldownTimer = dashCooldown;
+            _anim.SetBool("Dash", false);
+            if (_input.dash && dashCooldownTimer == 0)
+            {
+                _anim.SetBool("Dash", true);
+                DashFX.Play();
+                StartCoroutine(Dashh());
+                dashCooldownTimer = dashCooldown;
+            }
         }
+       
     }
 
     IEnumerator Dashh()
@@ -52,9 +61,9 @@ public class Dash : MonoBehaviour
         canDash = false;
         isDashing = true;
         thirdReference.Walk(dashSpeed);
-        tr.emitting = true;
+        //tr.emitting = true;
         yield return new WaitForSeconds(dashTime);
-        tr.emitting = false;
+        //tr.emitting = false;
         thirdReference.Walk(1);
         isDashing = false;
         yield return new WaitForSeconds(dashCooldown);

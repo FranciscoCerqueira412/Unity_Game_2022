@@ -8,12 +8,17 @@ using StarterAssets;
 public class Weapons : MonoBehaviour
 {
     public StarterAssetsInputsCustom _input;
+    [SerializeField] LayerMask aimColliderLayerMask = new LayerMask();
 
-
+    public PistolClass Pistol_C;
+    public MachineGunClass Machinegun_C;
+    ThirdPersonControllerCustom tpc;
     public GameObject[] _weapons;
     public float aimDuration;
     public Rig headLook;
     public Rig PistolAim;
+    public Rig MachineGunHold;
+    public Rig PistolHold;
     public Rig MachineGunAim;
     public RigBuilder rigBuilder;
     public Mesh[] pistolMeshes;
@@ -24,23 +29,22 @@ public class Weapons : MonoBehaviour
     public GameObject holster;
     public GameObject backHolster;
 
-
     ItemDragHandler itemHand;
-    //[Header("Caracteristicas das armas")]
 
     private void Start()
     {
         itemHand = FindObjectOfType<ItemDragHandler>();
+        tpc = FindObjectOfType<ThirdPersonControllerCustom>();
+             
     }
 
 
 
     private void Update()
     {
-
         RigChanging();
         ChangePoseWeapon();
-        //PistolClass();
+
     }
 
 
@@ -55,7 +59,13 @@ public class Weapons : MonoBehaviour
                 PistolAim.weight = 0;
                 headLook.weight = 1;
                 MachineGunAim.weight += Time.deltaTime / aimDuration;
-
+                Machinegun_C.ProjectilleShootMachineGun();
+                if (!Machinegun_C.reloading)
+                {
+                    PistolAim.weight = 0;
+                    headLook.weight = 1;
+                    
+                }
             }
             if (isMachineGun == false && isPistol == true)
             {
@@ -63,7 +73,13 @@ public class Weapons : MonoBehaviour
                 headLook.weight = 1;
                 PistolAim.weight += Time.deltaTime / aimDuration;
 
-
+                Pistol_C.ProjectilleShootPistol();
+                if (!Pistol_C.reloading)
+                {
+                    MachineGunAim.weight = 0;
+                    headLook.weight = 1;
+                    
+                }
             }
 
         }
@@ -79,7 +95,7 @@ public class Weapons : MonoBehaviour
 
     void RigChanging()
     {
-        if (Input.GetKey(KeyCode.Alpha1) && holster.transform.childCount>0)
+        if (Input.GetKey(KeyCode.Alpha1) && holster.transform.childCount > 0)
         {
             //Pistol
             isMachineGun = false;
@@ -94,16 +110,15 @@ public class Weapons : MonoBehaviour
             _weapons[0].SetActive(true);
             _weapons[1].SetActive(false);
             holster.transform.GetChild(0).gameObject.SetActive(false);
+
             if (backHolster.transform.childCount > 0)
             {
                 backHolster.transform.GetChild(0).gameObject.SetActive(true);
             }
-            
 
-
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                //_weapons[0].GetComponent<MeshFilter>().mesh = pistolMeshes[Random.Range(0, 13)];
+                _weapons[0].GetComponent<MeshFilter>().mesh = pistolMeshes[Random.Range(0, 2)];
             }
 
         }
@@ -125,15 +140,14 @@ public class Weapons : MonoBehaviour
             {
                 holster.transform.GetChild(0).gameObject.SetActive(true);
             }
-            
+
             backHolster.transform.GetChild(0).gameObject.SetActive(false);
             _weapons[1].GetComponentInChildren<MeshFilter>().mesh = backHolster.transform.GetChild(0).GetComponent<MeshFilter>().mesh;
 
-            //if (Input.GetKeyDown(KeyCode.K))
-            //{
-            //    _weapons[1].GetComponentInChildren<MeshFilter>().mesh = machineGunMeshes[Random.Range(0, 17)];
-            //}
-            //ChangePoseMachineGun();
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                _weapons[1].GetComponent<MeshFilter>().mesh = machineGunMeshes[Random.Range(0, 18)];
+            }
 
         }
 
@@ -154,18 +168,5 @@ public class Weapons : MonoBehaviour
         }
     }
 
-    void PistolClass()
-    {
-        if (_weapons[0].active)
-        {
-            //Pistola1
-            if (_weapons[0].GetComponent<MeshFilter>().mesh.name == "Pistol " + "Instance")
-            {
-                //Caracteristicas da arma
-                Debug.Log("PISTOLA 1 EM USO");
-            }
-        }
-
-    }
-
+  
 }
